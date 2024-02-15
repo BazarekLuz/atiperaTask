@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,5 +12,5 @@ import java.util.List;
 public class RepoDTO {
     private String name;
     private OwnerDTO owner;
-    private List<BranchDTO> branches;
+    private Boolean fork;
 }

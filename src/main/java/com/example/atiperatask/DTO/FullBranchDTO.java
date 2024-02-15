@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BranchDTO {
+public class FullBranchDTO {
     private String name;
-    private CommitDTO commit;
+    private String lastCommitSha;
 }

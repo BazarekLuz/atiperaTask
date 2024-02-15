@@ -5,11 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BranchDTO {
-    private String name;
-    private CommitDTO commit;
+public class FullRepoDTO {
+    private String repositoryName;
+    private String ownerLogin;
+    private List<FullBranchDTO> branches;
 }

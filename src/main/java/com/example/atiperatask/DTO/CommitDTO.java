@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BranchDTO {
-    private String name;
-    private CommitDTO commit;
+public class CommitDTO {
+    private String sha;
 }
