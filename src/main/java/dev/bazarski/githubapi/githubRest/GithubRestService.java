@@ -3,7 +3,6 @@ package dev.bazarski.githubapi.githubRest;
 import dev.bazarski.githubapi.config.GithubRestProperties;
 import dev.bazarski.githubapi.errors.exceptions.UserNotFoundException;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -26,50 +25,6 @@ public class GithubRestService {
                 .defaultHeader("Authorization", STR."Bearer\{props.getApiToken()}")
                 .build();
     }
-
-//    List<FullRepo> getAllReposNotForksFromUser(String name) {
-//        return getRepos(name)
-//                .stream()
-//                .filter(repo -> !repo.fork())
-//                .map(repo -> new FullRepo(
-//                        repo.name(),
-//                        repo.owner().login(),
-//                        getRepoBranches(repo.name(), repo.owner().login())
-//                                .stream()
-//                                .map(branch -> new FullRepo.FlatBranch(
-//                                        branch.name(),
-//                                        branch.commit().sha()
-//                                )).toList())
-//                ).toList();
-//    }
-
-
-//    List<FullRepo> getAllReposNotForksFromUser(String name) {
-//        List<Repo> repos = getRepos(name)
-//                .stream()
-//                .filter(repo -> !repo.fork())
-//                .toList();
-//
-//        List<FullRepo> fullFinalRepos;
-//        List<Future<FullRepo>> fullRepos = new ArrayList<>();
-//
-//        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
-//            for (var repo : repos) {
-//                Future<FullRepo> futureRepo =  executor.submit(() -> getFullRepo(repo));
-//                fullRepos.add(futureRepo);
-//            }
-//        }
-//        fullFinalRepos = fullRepos.stream().map(futureRepo -> {
-//            try {
-//                return futureRepo.get();
-//            } catch (InterruptedException | ExecutionException ex) {
-//                System.out.println("XDD");
-//            }
-//            return null;
-//        }).toList();
-//
-//        return fullFinalRepos;
-//    }
 
     List<FullRepo> getAllReposNotForksFromUser(String name) {
         List<Repo> repos = getRepos(name)
