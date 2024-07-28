@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class GithubRestProperties {
     private String apiUrl;
     private String apiToken;
+    private String username;
 
     public String getApiUrl() {
         return apiUrl;
@@ -23,5 +24,13 @@ public class GithubRestProperties {
 
     public void setApiToken(String apiToken) {
         this.apiToken = apiToken;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

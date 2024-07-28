@@ -18,7 +18,10 @@ public class GithubRestController {
     }
 
     @GetMapping("/users/{name}")
-    private ResponseEntity<List<FullRepo>> findAllReposNotForks(@RequestHeader(value = HttpHeaders.ACCEPT) String acceptHeader, @PathVariable String name) {
+    private ResponseEntity<List<FullRepo>> findAllReposNotForks(
+            @RequestHeader(value = HttpHeaders.ACCEPT) String acceptHeader,
+            @PathVariable String name
+    ) {
         if (!acceptHeader.equals("application/json"))
             throw new WrongRequestHeaderException(HttpStatus.BAD_REQUEST, "Wrong request headers");
         return ResponseEntity.ok(this.githubRestService.getAllReposNotForksFromUser(name));

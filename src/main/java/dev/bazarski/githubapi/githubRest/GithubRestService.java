@@ -3,6 +3,7 @@ package dev.bazarski.githubapi.githubRest;
 import dev.bazarski.githubapi.config.GithubRestProperties;
 import dev.bazarski.githubapi.errors.exceptions.UserNotFoundException;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -22,7 +23,8 @@ public class GithubRestService {
     public GithubRestService(RestClient.Builder builder, GithubRestProperties props) {
         this.restClient = builder
                 .uriBuilderFactory(new DefaultUriBuilderFactory(props.getApiUrl()))
-                .defaultHeader("Authorization", STR."Bearer\{props.getApiToken()}")
+                .defaultHeader(HttpHeaders.AUTHORIZATION, STR."Bearer \{props.getApiToken()}")
+                .defaultHeader(HttpHeaders.USER_AGENT, props.getUsername())
                 .build();
     }
 
@@ -53,51 +55,17 @@ public class GithubRestService {
                 .toList();
     }
 
-private FullRepo getFullRepo(Repo repo)  {
-    List<FullRepo.FlatBranch> branches = getRepoBranches(repo.name(), repo.owner().login())
-            .stream()
-            .map(branch -> new FullRepo.FlatBranch(
-                    branch.name(),
-                    branch.commit().sha()
-            )).toList();
-    return new FullRepo(repo.name(), repo.owner().login(), branches);
-}
+    FullRepo getFullRepo(Repo repo)  {
+        List<FullRepo.FlatBranch> branches = getRepoBranches(repo.name(), repo.owner().login())
+                .stream()
+                .map(branch -> new FullRepo.FlatBranch(
+                        branch.name(),
+                        branch.commit().sha()
+                )).toList();
+        return new FullRepo(repo.name(), repo.owner().login(), branches, repo.fork());
+    }
 
-//    List<FullRepo> getAllReposNotForksFromUser(String name) {
-//    return getRepos(name)
-//            .stream()
-//            .filter(repo -> !repo.fork())
-//            .map(repo -> {
-//                if (repo instanceof Repo(String repoName, Repo.Owner(String login), boolean _)) {
-//                    return new FullRepo(repoName, login, getRepoBranches(repoName, login)
-//                            .stream()
-//                            .map(branch -> {
-//                                if (branch instanceof Branch(String branchName, Branch.Commit(String sha))) {
-//                                    return new FullRepo.FlatBranch(branchName, sha);
-//                                }
-//                                return new FullRepo.FlatBranch(null, null);
-//                            }).toList());
-//                }
-//                return new FullRepo(null, null, null);
-//            }).toList();
-//    }
-
-//    List<FullRepo> getAllReposNotForksFromUser(String name) {
-//        return getRepos(name)
-//                .stream()
-//                .filter(repo -> !repo.fork())
-//                .map(repo -> switch (repo) {
-//                    case Repo(String repoName, Repo.Owner(String login), var _)
-//                            -> new FullRepo(repoName, login, getRepoBranches(repoName, login)
-//                            .stream()
-//                            .map(branch -> switch (branch) {
-//                                case Branch(String branchName, Branch.Commit(String sha))
-//                                        -> new FullRepo.FlatBranch(branchName, sha);
-//                            }).toList());
-//                }).toList();
-//    }
-
-    private List<Repo> getRepos(String name) {
+    List<Repo> getRepos(String name) {
         return restClient.get()
                 .uri("users/{name}/repos", name)
                 .retrieve()
