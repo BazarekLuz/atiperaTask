@@ -1,5 +1,7 @@
 package dev.bazarski.githubapi.githubRest;
 
+import dev.bazarski.githubapi.errors.exceptions.UserNotFoundException;
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +17,6 @@ class GithubRestServiceTest {
     GithubRestService service;
 
     String user = "bazarekluz";
-
 
     @Test
     void shouldGetReposAllPublicReposOfUser() {
@@ -43,5 +44,11 @@ class GithubRestServiceTest {
         List<Branch> branches = service.getRepoBranches(repoName, user);
 
         assertEquals(branches.getFirst(), branch);
+    }
+
+    @Test
+    void shouldThrowExceptionGivenWrongUsername() {
+        String user = "sdfsddregedrr fwef gs";
+        assertThrows(UserNotFoundException.class, () -> service.getAllReposNotForksFromUser(user));
     }
 }
