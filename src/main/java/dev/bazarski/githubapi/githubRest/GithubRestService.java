@@ -2,83 +2,65 @@ package dev.bazarski.githubapi.githubRest;
 
 import dev.bazarski.githubapi.config.GithubRestProperties;
 import dev.bazarski.githubapi.errors.exceptions.UserNotFoundException;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
+import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 @Service
 public class GithubRestService {
-    private final RestClient restClient;
+    private final WebClient client;
 
-    public GithubRestService(RestClient.Builder builder, GithubRestProperties props) {
-        this.restClient = builder
+    public GithubRestService(WebClient.Builder builder, GithubRestProperties props) {
+        this.client = builder
                 .uriBuilderFactory(new DefaultUriBuilderFactory(props.getApiUrl()))
                 .defaultHeader(HttpHeaders.AUTHORIZATION, STR."Bearer \{props.getApiToken()}")
                 .defaultHeader(HttpHeaders.USER_AGENT, props.getUsername())
                 .build();
     }
 
-    List<FullRepo> getAllReposNotForksFromUser(String name) {
-        List<Repo> repos = getRepos(name)
-                .stream()
+    Flux<FullRepo> getAllReposNotForksFromUser(String name) {
+        return getRepos(name)
                 .filter(repo -> !repo.fork())
-                .toList();
-
-        List<Future<FullRepo>> futureFullRepos = new ArrayList<>();
-
-        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
-            for (var repo : repos) {
-                Future<FullRepo> futureRepo =  executor.submit(() -> getFullRepo(repo));
-                futureFullRepos.add(futureRepo);
-            }
-        }
-
-        return futureFullRepos
-                .stream()
-                .map(future -> {
-                    try {
-                        return future.get();
-                    } catch (ExecutionException | InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .toList();
+                .publishOn(Schedulers.fromExecutor(Executors.newVirtualThreadPerTaskExecutor()))
+                .flatMapSequential(this::getFullRepo);
     }
 
-    FullRepo getFullRepo(Repo repo)  {
-        List<FullRepo.FlatBranch> branches = getRepoBranches(repo.name(), repo.owner().login())
-                .stream()
-                .map(branch -> new FullRepo.FlatBranch(
+    Mono<FullRepo> getFullRepo(Repo repo) {
+        return getRepoBranches(repo.name(), repo.owner().login())
+                .flatMap(branch -> Flux.just(new FullRepo.FlatBranch(
                         branch.name(),
                         branch.commit().sha()
-                )).toList();
-        return new FullRepo(repo.name(), repo.owner().login(), branches, repo.fork());
+                )))
+                .collectList()
+                .flatMap(branches -> Mono.just(new FullRepo(
+                        repo.name(),
+                        repo.owner().login(),
+                        branches,
+                        repo.fork()
+                )));
     }
 
-    List<Repo> getRepos(String name) {
-        return restClient.get()
+    Flux<Repo> getRepos(String name) {
+        return client.get()
                 .uri("users/{name}/repos", name)
                 .retrieve()
-                .onStatus(HttpStatusCode::is4xxClientError, ((_, response) -> {
-                    throw new UserNotFoundException(response.getStatusCode(), response.getStatusText());
-                }))
-                .body(new ParameterizedTypeReference<>() {});
+                .onStatus(HttpStatusCode::is4xxClientError, response -> {
+                    throw new UserNotFoundException(response.statusCode());
+                })
+                .bodyToFlux(Repo.class);
     }
 
-    List<Branch> getRepoBranches(String repoName, String ownerLogin) {
-        return this.restClient.get()
+    Flux<Branch> getRepoBranches(String repoName, String ownerLogin) {
+        return this.client.get()
                 .uri(STR."repos/\{ownerLogin}/\{repoName}/branches")
                 .retrieve()
-                .body(new ParameterizedTypeReference<>() {});
+                .bodyToFlux(Branch.class);
     }
 }

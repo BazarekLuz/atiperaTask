@@ -5,8 +5,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("api/github")
@@ -18,7 +17,7 @@ public class GithubRestController {
     }
 
     @GetMapping("/users/{name}")
-    private ResponseEntity<List<FullRepo>> findAllReposNotForks(
+    private ResponseEntity<Flux<FullRepo>> findAllReposNotForks(
             @RequestHeader(value = HttpHeaders.ACCEPT) String acceptHeader,
             @PathVariable String name
     ) {

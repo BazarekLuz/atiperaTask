@@ -2,3 +2,8 @@ github:
   api-url: https://api.github.com
   api-token:
   username: BazarekLuz
+
+spring:
+  threads:
+    virtual:
+      enabled: true
