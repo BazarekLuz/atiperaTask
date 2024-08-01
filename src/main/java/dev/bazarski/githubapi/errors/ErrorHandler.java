@@ -3,14 +3,12 @@ package dev.bazarski.githubapi.errors;
 import dev.bazarski.githubapi.errors.exceptions.UserNotFoundException;
 import dev.bazarski.githubapi.errors.exceptions.WrongRequestHeaderException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class ErrorHandler extends ResponseEntityExceptionHandler {
+public class ErrorHandler {
     @ExceptionHandler(value = {
             UserNotFoundException.class
     })
@@ -27,11 +25,11 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         return new ErrorMessage(exception.getStatusCode(), exception.getMessage());
     }
 
-    @ExceptionHandler(value = {
-            MissingRequestHeaderException.class,
-    })
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorMessage handleExceptions(Exception exception) {
-        return new ErrorMessage(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
-    }
+//    @ExceptionHandler(value = {
+//            MissingRequestHeaderException.class,
+//    })
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorMessage handleExceptions(Exception exception) {
+//        return new ErrorMessage(HttpStatus.BAD_REQUEST.toString(), exception.getMessage());
+//    }
 }
