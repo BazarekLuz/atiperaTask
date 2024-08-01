@@ -1,12 +1,9 @@
 package dev.bazarski.githubapi.githubRest;
 
-import dev.bazarski.githubapi.config.GithubRestProperties;
 import dev.bazarski.githubapi.errors.exceptions.UserNotFoundException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.DefaultUriBuilderFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -17,12 +14,8 @@ import java.util.concurrent.Executors;
 public class GithubRestService {
     private final WebClient client;
 
-    public GithubRestService(WebClient.Builder builder, GithubRestProperties props) {
-        this.client = builder
-                .uriBuilderFactory(new DefaultUriBuilderFactory(props.getApiUrl()))
-                .defaultHeader(HttpHeaders.AUTHORIZATION, STR."Bearer \{props.getApiToken()}")
-                .defaultHeader(HttpHeaders.USER_AGENT, props.getUsername())
-                .build();
+    public GithubRestService(WebClient webClient) {
+        this.client = webClient;
     }
 
     Flux<FullRepo> getAllReposNotForksFromUser(String name) {

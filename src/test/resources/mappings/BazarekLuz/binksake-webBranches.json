@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/repos/BazarekLuz/binksake-web/branches"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "name": "master",
+        "commit": {
+          "sha": "032ecf372bc8b6c1b8a37c23551806ef30faec5e",
+          "url": "https://api.github.com/repos/BazarekLuz/binksake-web/commits/032ecf372bc8b6c1b8a37c23551806ef30faec5e"
+        },
+        "protected": false
+      }
+    ]
+  }
+}

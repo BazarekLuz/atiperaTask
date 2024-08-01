@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/repos/BazarekLuz/teoniteTask/branches"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "name": "master",
+        "commit": {
+          "sha": "0caa61b23d6125ed4e831dace50ebff36892bf6d",
+          "url": "https://api.github.com/repos/BazarekLuz/teoniteTask/commits/0caa61b23d6125ed4e831dace50ebff36892bf6d"
+        },
+        "protected": false
+      }
+    ]
+  }
+}

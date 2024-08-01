@@ -1,0 +1,9 @@
+github:
+  api-url: http://localhost:9000
+  api-token: asdvcsf
+  username: BazarekLuz
+
+spring:
+  threads:
+    virtual:
+      enabled: true

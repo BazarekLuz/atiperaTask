@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/repos/BazarekLuz/atiperaTask/branches"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "name": "master",
+        "commit": {
+          "sha": "68b8269e0c8d5450f691772ca34491e946fe8a48",
+          "url": "https://api.github.com/repos/BazarekLuz/atiperaTask/commits/68b8269e0c8d5450f691772ca34491e946fe8a48"
+        },
+        "protected": false
+      }
+    ]
+  }
+}
