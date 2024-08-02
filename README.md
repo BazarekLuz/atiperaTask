@@ -2,7 +2,7 @@ Feel free to download and analyze the project. Developed in Intellij, Maven as b
 
 API uses github API Authorization Key, if You wish to run the application, You should insert your key into application.yml properties file.
 
-Below are presented screenshots of Postman with the API calls:
+**Below are presented screenshots of Postman with the API calls:**
 1. Getting repos from existing user
    ![scr1](https://github.com/user-attachments/assets/95c4994a-638c-4eaf-89e5-ae8d82753429)
 2. Getting repos from nonexisting user
@@ -14,7 +14,9 @@ Below are presented screenshots of Postman with the API calls:
 5. Getting repos from user with no public repos
    ![scr5](https://github.com/user-attachments/assets/208c4710-60d8-4107-b90e-530f6a0b45b2)
 
-The same calls after switching to WebClient from RestClient (noticibly faster responses):
+
+**The same calls after switching to WebClient from RestClient (noticibly faster responses):**
+
 1.
 ![1](https://github.com/user-attachments/assets/8791f5db-15d2-4978-941b-ff9dcfcad5c9)
 2.
