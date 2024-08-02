@@ -13,3 +13,15 @@ Below are presented screenshots of Postman with the API calls:
    ![scr3](https://github.com/user-attachments/assets/0539c13b-0983-4fd1-846e-231aa5192731)
 5. Getting repos from user with no public repos
    ![scr5](https://github.com/user-attachments/assets/208c4710-60d8-4107-b90e-530f6a0b45b2)
+
+The same calls after switching to WebClient from RestClient (noticibly faster responses):
+1.
+![1](https://github.com/user-attachments/assets/8791f5db-15d2-4978-941b-ff9dcfcad5c9)
+2.
+![2](https://github.com/user-attachments/assets/1b3033fa-453e-4509-926e-641fa409142c)
+3.
+![3](https://github.com/user-attachments/assets/84bf2a52-1686-4e0d-836a-139d0e96bfc4)
+4.
+![4](https://github.com/user-attachments/assets/b45d2ae1-1d36-48e9-8e18-cd0d989a5ec8)
+5.
+![5](https://github.com/user-attachments/assets/24c25eb6-268f-4057-8ce9-fbc1e031f847)
