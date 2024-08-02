@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/repos/ArturChmura/ModelowanieGeometryczne/branches"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": [
+      {
+        "name": "main",
+        "commit": {
+          "sha": "6800bfbdeeb595674a85a8e595777fe17536f5c3",
+          "url": "https://api.github.com/repos/ArturChmura/ModelowanieGeometryczne/commits/6800bfbdeeb595674a85a8e595777fe17536f5c3"
+        },
+        "protected": false
+      },
+      {
+        "name": "refactorv2",
+        "commit": {
+          "sha": "d4fcb4f90a7d79ef40ef142df17b3f32827d4d65",
+          "url": "https://api.github.com/repos/ArturChmura/ModelowanieGeometryczne/commits/d4fcb4f90a7d79ef40ef142df17b3f32827d4d65"
+        },
+        "protected": false
+      }
+    ]
+  }
+}
